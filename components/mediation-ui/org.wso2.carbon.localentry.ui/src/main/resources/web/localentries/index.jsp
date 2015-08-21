@@ -97,7 +97,7 @@
         var row = table.rows[i];
         var cell = row.cells[0];
         var type = row.cells[1];
-        var content = cell.firstChild.nodeValue;
+        var content = (cell.firstChild.nodeValue).trim();
         var endType = type.firstChild.nodeValue;
 
         if (endType.trim() == 'Inline Text') {

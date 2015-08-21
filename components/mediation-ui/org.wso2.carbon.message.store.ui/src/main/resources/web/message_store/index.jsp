@@ -72,7 +72,7 @@
         var table = document.getElementById("myTable");
         var row = table.rows[i];
         var cell = row.cells[0];
-        var content = cell.firstElementChild.innerHTML;
+        var content = (cell.firstElementChild.innerHTML).trim();
 
         function delEp() {
             document.location.href = "deleteMessageStoresHandler.jsp?" + "messageStoreName=" + content;
@@ -98,7 +98,7 @@
         var row = table.rows[i];
         var cell = row.cells[0];
         var type = row.cells[1];
-        var content = cell.firstElementChild.innerHTML;
+        var content = (cell.firstElementChild.innerHTML).trim();
         if (storeType == "org.apache.synapse.message.store.impl.jms.JmsStore") {
             document.location.href = "jmsMessageStore.jsp?" + "messageStoreName=" + content;
         } else if (storeType == "org.apache.synapse.message.store.impl.rabbitmq.RabbitMQStore") {
