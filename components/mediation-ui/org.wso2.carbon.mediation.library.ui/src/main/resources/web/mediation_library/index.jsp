@@ -113,16 +113,30 @@ if(tabs!=null && tabs.equals("0")) {
         });
     }
 
-    function updateStatus(libQName, libName, packageName, status) {
+    function updateStatus(libQName, libName, packageName, status, artifactContainerName) {
         // Show confirmation only when disabling the connector
+        var message;
+        if (artifactContainerName != null && artifactContainerName != "") {
+            message = "<fmt:message key="confirm.disable.connector.artifactContainer.deployed"/>";
+        } else {
+            message = "<fmt:message key="confirm.disable.connector"/>";
+        }
         if (status == "disabled") {
-            CARBON.showConfirmationDialog("<fmt:message key="confirm.disable.connector"/>", function () {
+            CARBON.showConfirmationDialog(message, function () {
                 document.applicationsForm.action = "import_lib.jsp?libQName=" + libQName + "&status=" + status + "&libName=" + libName + "&packageName=" + packageName;
                 document.applicationsForm.submit();
             });
         } else {
-            document.applicationsForm.action = "import_lib.jsp?libQName=" + libQName + "&status=" + status + "&libName=" + libName + "&packageName=" + packageName;
-            document.applicationsForm.submit();
+            if (artifactContainerName != null && artifactContainerName != "") {
+                CARBON.showConfirmationDialog("<fmt:message key="confirm.enable.connector.artifactContainer.deployed"/>", function () {
+                    document.applicationsForm.action = "import_lib.jsp?libQName=" + libQName + "&status=" + status + "&libName=" + libName + "&packageName=" + packageName;
+                    document.applicationsForm.submit();
+                });
+            } else {
+                document.applicationsForm.action = "import_lib.jsp?libQName=" + libQName + "&status=" + status + "&libName=" + libName + "&packageName=" + packageName;
+                document.applicationsForm.submit();
+            }
+
         }
     }
 
@@ -200,11 +214,15 @@ if(tabs!=null && tabs.equals("0")) {
                              String libDesc = libraryInfo.getDescription();
                              String libQName = libraryInfo.getQName();
                              boolean libStatus = libraryInfo.getStatus();
+                             String artifactContainerName = libraryInfo.getArtifactContainerName();
                          
                     %>
 								<tr>
-									<td><a
-										href="./application_info.jsp?libName=<%= libName%>&pkgName=<%= pkgName%>"><%= libName%></a>
+									<td>
+                                        <% if (artifactContainerName != null && !(artifactContainerName.equals(""))) { %>
+                                            <img src="images/applications.gif">
+                                        <% } %>
+                                        <a href="./application_info.jsp?libName=<%= libName%>&pkgName=<%= pkgName%>"><%= libName%></a>
 									</td>
 									<%
                             if (pkgName != null) {
@@ -228,24 +246,32 @@ if(tabs!=null && tabs.equals("0")) {
 									<td> <%if(libStatus){ %>
 									   <a href="#" class="icon-link-nofloat"
 										style="background-image: url(images/activate.gif);"
-										onclick="updateStatus('<%=libQName%>','<%=libName%>','<%=pkgName%>','disabled');"
+										onclick="updateStatus('<%=libQName%>','<%=libName%>','<%=pkgName%>','disabled','<%=artifactContainerName%>');"
 										title="<%= bundle.getString("libs.status.disable.connector")%>">
                                            <%= bundle.getString("libs.status.enabled")%></a>
 										  <%}else{%>
 										     <a href="#" class="icon-link-nofloat"
 										style="background-image: url(images/deactivate.gif);"
-										onclick="updateStatus('<%=libQName%>','<%=libName%>','<%=pkgName%>','enabled');"
+										onclick="updateStatus('<%=libQName%>','<%=libName%>','<%=pkgName%>','enabled','<%=artifactContainerName%>');"
 										title="<%= bundle.getString("libs.status.enable.connector")%>">
                                                  <%= bundle.getString("libs.status.disabled")%></a>
 										  <%} %>
 									</td>
 
-                                    <td><a href="#" class="icon-link-nofloat"
-                                           style="background-image: url(images/delete.gif);"
-                                           onclick="deleteApplication('<%= libQName%>');"
-                                           title="<%= bundle.getString("libs.delete.this.row")%>"><%= bundle.getString("libs.delete")%>
-                                    </a>
-                                    </td>
+                                    <% if (artifactContainerName != null && !artifactContainerName.equals("")) { %>
+                                        <td><a href="#" class="icon-link-nofloat"
+                                               style="background-image: url(images/delete.gif);" title="<%= bundle.getString("libs.delete.this.row")%>"><%= bundle.getString("libs.delete")%>
+                                        </a>
+                                        </td>
+                                    <% } else { %>
+                                        <td><a href="#" class="icon-link-nofloat"
+                                               style="background-image: url(images/delete.gif);"
+                                               onclick="deleteApplication('<%= libQName%>');"
+                                               title="<%= bundle.getString("libs.delete.this.row")%>"><%= bundle.getString("libs.delete")%>
+                                        </a>
+                                        </td>
+                                    <% } %>
+
 									<td><a
 										href="download-ajaxprocessor.jsp?cappName=<%= libName%>"
 										class="icon-link-nofloat"

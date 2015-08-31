@@ -24,6 +24,8 @@ public class LibraryInfo {
     private String description;
     private LibraryArtifiactInfo[] artifacts;
     private boolean status;
+    private String artifactContainerName;
+    private boolean isEdited;
 
     private String qName;
 
@@ -82,6 +84,20 @@ public class LibraryInfo {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
-    
+
+    public String getArtifactContainerName() {
+        return artifactContainerName;
+    }
+
+    public void setArtifactContainerName(String artifactContainerName) {
+        this.artifactContainerName = artifactContainerName;
+    }
+
+    public boolean getIsEdited() {
+        return isEdited;
+    }
+
+    public void setIsEdited(boolean isEdited) {
+        this.isEdited = isEdited;
+    }
 }

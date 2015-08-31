@@ -96,7 +96,7 @@ public class SynapseAppDeployer implements AppDeploymentHandler {
                 .getDependencies();
 
         deployClassMediators(artifacts, axisConfig);
-        deploySynapseLibrary(artifacts, axisConfig);
+        deploySynapseLibrary(artifacts, axisConfig, carbonApp.getAppName());
         for (Artifact.Dependency dep : artifacts) {
             Artifact artifact = dep.getArtifact();
 
@@ -275,7 +275,7 @@ public class SynapseAppDeployer implements AppDeploymentHandler {
      * @throws DeploymentException if something goes wrong while deployment
      */
     private void deploySynapseLibrary(List<Artifact.Dependency> artifacts,
-                                      AxisConfiguration axisConfig) throws DeploymentException {
+                                      AxisConfiguration axisConfig, String cappName) throws DeploymentException {
         for (Artifact.Dependency dependency : artifacts) {
 
             Artifact artifact = dependency.getArtifact();
@@ -299,6 +299,10 @@ public class SynapseAppDeployer implements AppDeploymentHandler {
                         artifact.setDeploymentStatus(AppDeployerConstants.DEPLOYMENT_STATUS_DEPLOYED);
                     } else {
                         try {
+                            if (deployer instanceof AbstractSynapseArtifactDeployer) {
+                                ((AbstractSynapseArtifactDeployer)deployer).setCustomLog(cappName,
+                                        AppDeployerUtils.getTenantIdLogString(AppDeployerUtils.getTenantId()));
+                            }
                             deployer.deploy(new DeploymentFileData(new File(artifactPath), deployer));
                             artifact.setDeploymentStatus(AppDeployerConstants.DEPLOYMENT_STATUS_DEPLOYED);
                             try {

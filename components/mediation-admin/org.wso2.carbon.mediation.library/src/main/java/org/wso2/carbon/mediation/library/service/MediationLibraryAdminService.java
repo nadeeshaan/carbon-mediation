@@ -346,6 +346,8 @@ public class MediationLibraryAdminService extends AbstractServiceBusAdmin {
 			libInfo.setDescription(library.getDescription());
 			libInfo.setQName(library.getQName().toString());
 			libInfo.setStatus(library.getLibStatus());
+			libInfo.setArtifactContainerName(library.getArtifactContainerName());
+			libInfo.setIsEdited(library.getIsEdited());
 			librarySet.add(libInfo);
 		}
 
@@ -451,8 +453,10 @@ public class MediationLibraryAdminService extends AbstractServiceBusAdmin {
 				}
 
 				// update synapse configuration.
-				MediationPersistenceManager mp = getMediationPersistenceManager();
-				mp.saveItem(synapseImport.getName(), ServiceBusConstants.ITEM_TYPE_IMPORT);				
+				if (synLib.getArtifactContainerName() == null) {
+					MediationPersistenceManager mp = getMediationPersistenceManager();
+					mp.saveItem(synapseImport.getName(), ServiceBusConstants.ITEM_TYPE_IMPORT);
+				}
 			}
 
 		} catch (Exception e) {

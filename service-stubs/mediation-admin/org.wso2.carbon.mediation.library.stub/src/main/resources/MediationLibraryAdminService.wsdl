@@ -5,8 +5,10 @@
          <xs:complexType name="LibraryInfo">
             <xs:sequence>
                <xs:element minOccurs="0" name="QName" nillable="true" type="xs:string"></xs:element>
+               <xs:element minOccurs="0" name="artifactContainerName" nillable="true" type="xs:string"></xs:element>
                <xs:element maxOccurs="unbounded" minOccurs="0" name="artifacts" nillable="true" type="ax2225:LibraryArtifiactInfo"></xs:element>
                <xs:element minOccurs="0" name="description" nillable="true" type="xs:string"></xs:element>
+               <xs:element minOccurs="0" name="isEdited" nillable="true" type="xs:boolean"></xs:element>
                <xs:element minOccurs="0" name="libName" nillable="true" type="xs:string"></xs:element>
                <xs:element minOccurs="0" name="packageName" nillable="true" type="xs:string"></xs:element>
                <xs:element minOccurs="0" name="qName" nillable="true" type="xs:string"></xs:element>
