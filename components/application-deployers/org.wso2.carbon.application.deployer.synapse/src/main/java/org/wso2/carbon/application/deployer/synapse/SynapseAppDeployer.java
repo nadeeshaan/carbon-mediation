@@ -190,7 +190,7 @@ public class SynapseAppDeployer implements AppDeploymentHandler {
 
                         if (deployer instanceof AbstractSynapseArtifactDeployer) {
                             ((AbstractSynapseArtifactDeployer) deployer).setCustomLog(carbonApplication.getAppName(),
-                                    AppDeployerUtils.getTenantIdLogString(AppDeployerUtils.getTenantId()));
+                                    AppDeployerUtils.getTenantIdLogString(AppDeployerUtils.getTenantId()), carbonApplication.getAppVersion());
                         }
 
                         deployer.undeploy(artifactPath);
@@ -962,7 +962,7 @@ public class SynapseAppDeployer implements AppDeploymentHandler {
     public void setCustomLogContent (Deployer deployer, CarbonApplication carbonApp) {
         if ((deployer instanceof AbstractSynapseArtifactDeployer) && carbonApp != null) {
             ((AbstractSynapseArtifactDeployer) deployer).setCustomLog(carbonApp.getAppName(),
-                    AppDeployerUtils.getTenantIdLogString(AppDeployerUtils.getTenantId()));
+                    AppDeployerUtils.getTenantIdLogString(AppDeployerUtils.getTenantId()), carbonApp.getAppVersion());
         }
         else if ((deployer instanceof AbstractSynapseArtifactDeployer) && carbonApp == null) {
             ((AbstractSynapseArtifactDeployer) deployer).setCustomLogContentNull();
